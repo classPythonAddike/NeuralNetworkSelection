@@ -1,1 +1,1 @@
-from NeuralNetworkSelector.main import ModelSelector
+from NeuralNetworkSelection.main import ModelSelector
