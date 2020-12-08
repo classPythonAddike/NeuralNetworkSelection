@@ -7,7 +7,7 @@ setup(
   description = 'Module to select the best sklearn neural network',
   author = 'class PythonAddict',
   url = 'https://github.com/classPythonAddike/NeuralNetworkSelection',
-  download_url = 'https://github.com/classPythonAddike/NeuralNetworkSelection/archive/v1_0_0.tar.gz',
+  download_url = 'https://github.com/classPythonAddike/NeuralNetworkSelection/archive/v_1.1.1.tar.gz',
   keywords = ['Selection', 'scikit-learn', 'Neural Networks'],
   install_requires=['scikit-learn', 'tqdm'],
   classifiers=[
