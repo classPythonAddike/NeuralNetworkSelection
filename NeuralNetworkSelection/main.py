@@ -1,5 +1,6 @@
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.metrics import accuracy_score
+from tqdm import tqdm
 
 def ModelSelector(training_data:list, testing_data:list, model, max_iterations = 10000,
                    max_num_hidden_layers = 4, min_num_hidden_layers = 1,
@@ -66,32 +67,28 @@ def ModelSelector(training_data:list, testing_data:list, model, max_iterations =
     num_models = len(combos) * len(loss_func) * len(activation) * len(learning_rate)
     models = [-4]
     scores = [-4]
+    to_train = []
     print(f'Training: {num_models} models to train')
-    n = num_models // 100
-    if n == 0:
-        n = 1
-    print("[", end = "")
-    u = 0
     for loss_function in loss_func:
         for activation_function in activation:
             for lr in learning_rate:
                 for hidden_layers in combos:
-                    if model == 'NNClassifier':
-                        mlp = MLPClassifier(hidden_layer_sizes = hidden_layers, activation = activation_function,
-                                            solver = loss_function, learning_rate = lr, tol = min_learning_rate, max_iter = len(hidden_layers) *  max_iterations)
-                    elif model == 'NNRegressor':
-                        mlp = MLPRegressor(hidden_layer_sizes = hidden_layers, activation = activation_function,
-                                           solver = loss_function, learning_rate = lr, tol = min_learning_rate, max_iter = len(hidden_layers) * max_iterations)
-                    mlp.fit(train_X, train_y)
-                    accuracy = accuracy_score(mlp.predict(test_X), test_y)
-                    if u % n == 0:
-                        print("->", end = "")
-                    if accuracy > max(scores):
+                    to_train.append({"hidden_layer_sizes": hidden_layers,
+                    "activation": activation_function,
+                    "solver": loss_function,
+                    "learning_rate": lr,
+                    "tol": min_learning_rate,
+                    "max_iter": len(hidden_layers) * max_iterations})
+	
+    for data in tqdm(to_train):
+        if model == 'NNClassifier':
+            mlp = MLPClassifier(**data)
+            mlp.fit(train_X, train_y)
+            accuracy = accuracy_score(mlp.predict(test_X), test_y)
+            if accuracy > max(scores):
                         models.append(mlp)
                         scores.append(accuracy)
-                    u += 1
-    print("]")
-    print(f"Finished training, highest accuracy: {max(scores)}")
+                    
     return models[scores.index(max(scores))]
 
 #testing purposes
