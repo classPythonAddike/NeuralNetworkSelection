@@ -10,9 +10,9 @@
 
 ### Usage
 
-```sh
-from NeuralNetworkSelector import BestModel
+```python
+from NeuralNetworkSelector import ModelSelector
 . . . .
-model = BestModel([train_X, train_y], [test_X, test_y], model = "NNRegressor")
+model = ModelSelector([train_X, train_y], [test_X, test_y], model = "NNRegressor")
 model.predict(. . . .)
 ```
